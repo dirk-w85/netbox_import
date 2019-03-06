@@ -1,0 +1,6 @@
+[
+ { 
+  "labels": { "env": "internal", "tenant": "SECLAB" },
+  "targets": ["ansible-01:9100","grafana-01:9100","script-01:9100","samba-01:9100","gluster-mig:9100","tick-01:9100","docker-01:9100","docker-02:9100","honey-01:9100","prom-01:9100","zfs-01:9100","zfs-02:9100","infra-01:9100","infra-02:9100"] 
+ }
+]

@@ -28,12 +28,9 @@ import requests
 import ConfigParser
 import sys
 
-
 def main():
   print "Main"
-  AnsibleHostGroups={}
-  DNSEntries = {}
-  config = ConfigParser.SafeConfigParser(allow_no_value=True)
+  ZabbixHosts={}
 
   print "-"*20
   r = requests.get("http://"+sys.argv[1]+"/api/ipam/ip-addresses/?limit=1000")
@@ -42,37 +39,22 @@ def main():
     print("{0} Ip-Addresses in Netbox").format(IpAddresses["count"])
 
     for Ip in IpAddresses["results"]:
-      if Ip["status"]["label"] == "Active":
-        Address = Ip["address"].split("/")
-        if len(Ip["tags"]) >= 1:
+      Address = Ip["address"].split("/")
+      if len(Ip["tags"]) >= 1:
+        for Tag in Ip["tags"]:
+          if "Zabbix" in Tag and Ip["description"] != "":
+            if Tag not in ZabbixHosts:
+              ZabbixHosts[Tag] = []
+              ZabbixHosts[Tag].append(Address[0]+","+Ip["description"])
+            else:
+              ZabbixHosts[Tag].append(Address[0]+","+Ip["description"])
 
-          for Tag in Ip["tags"]:
-            if Tag not in AnsibleHostGroups:
-              AnsibleHostGroups[Tag] = []
-
-            AnsibleHostGroups[Tag].append(Address[0])  
-        if Ip["description"] != "":
-          DNSEntries[Address[0]] = Ip["description"]
-
-    for Section in AnsibleHostGroups:
-      if "Ansible" in Section:
-        NewSection = Section.split("Grp_")
-        config.add_section(NewSection[1])
-
-        for Host in AnsibleHostGroups[Section]:
-          config.set(NewSection[1], Host)
-
-    with open('hosts', 'wb') as configfile:
-      config.write(configfile)
-
-
-    DNSFile = open('hosts.yml', 'wb') 
-    DNSFile.write('hosts:\n')
-    print("Writing {0} DNS Entries into File.").format(len(DNSEntries))
-    for ARecord in DNSEntries:
-      DNSFile.write('  - { ip: '+ARecord+', name: '+DNSEntries[ARecord].lower()+', mac: ""}\n')
-
+    ZabbixFile = open('zabbix_hosts.yml', 'wb')
+    for Template in ZabbixHosts:
+      ZabbixFile.write(Template+':\n')
+      for Host in ZabbixHosts[Template]:
+        Host = Host.split(",")
+        ZabbixFile.write('  - { ip: '+Host[0]+', name: "'+Host[1].lower()+'" }\n')      
 
 if __name__ == "__main__":
   main()
-

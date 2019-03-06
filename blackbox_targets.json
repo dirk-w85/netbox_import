@@ -1,0 +1,14 @@
+[
+ { 
+  "labels": { "env": "internal", "tenant": "SHARED" },
+  "targets": ["se-r4_n9372px-e-mgmt_vl-17","se-r4_n9372px-e-mgmt_vl-18","se-r4_n9372px-e-mgmt_mgmt0"] 
+ },
+ { 
+  "labels": { "env": "internal", "tenant": "SECLAB" },
+  "targets": ["win2k12-infra-01","fmc-01","se-r5_c220m4-02_cimc","sec-apic-01","se-r5_c220m4-01_cimc","se-r5-c240m4-01_cimc","se-r5-c240m4-02_cimc","se-r5-c240m4-03_cimc","se-r5-c240m4-04_cimc","smcve-01","smcve-02","sfcsf-01","sfcnf-01","sona-01","se-r5-c240m4-05_cimc","se-r5-c240m4-06_cimc","vcsa-01","se-r5-c240m4-07_cimc","cdo-sdc-01","ftd-01","aci_bd_vl-17","secfab-vl17-bd"] 
+ },
+ { 
+  "labels": { "env": "internal", "tenant": "ENLAB" },
+  "targets": ["C65-VSS_Lo0"] 
+ }
+]

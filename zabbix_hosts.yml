@@ -1,0 +1,8 @@
+ZabbixTemplate_OSLinux:
+  - { ip: 10.1.17.21, name: "ansible-01" }
+ZabbixTemplate_ICMP:
+  - { ip: 10.0.0.1, name: "C65-VSS_Lo0" }
+  - { ip: 10.1.17.27, name: "fmc-01" }
+  - { ip: 10.1.17.71, name: "ftd-01" }
+  - { ip: 10.1.18.80, name: "se-r5-fp4100-01-admin" }
+  - { ip: 10.1.18.90, name: "sbr-r4-fp4100-02-admin" }
