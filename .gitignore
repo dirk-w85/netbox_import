@@ -1,0 +1,6 @@
+*.json
+._*
+zabbix_hosts.yml
+import.sh
+hosts.yml
+hosts
