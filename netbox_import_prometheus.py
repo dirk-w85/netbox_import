@@ -42,6 +42,9 @@ def main():
 
     for Ip in IpAddresses["results"]:
       if Ip["status"]["label"] == "Active":
+        if " " in Ip["description"]:
+            Ip["description"] = Ip["description"].replace(" ", "_")
+
         if len(Ip["tags"]) >= 1:
           for Tag in Ip["tags"]:
             if "Prometheus-Node_Exporter" in Tag and Ip["description"] != "":
@@ -57,7 +60,8 @@ def main():
                   PrometheusBlackBox[Ip["tenant"]["name"]] = []
                   PrometheusBlackBox[Ip["tenant"]["name"]].append(Ip["description"])
                 else:
-                  PrometheusBlackBox[Ip["tenant"]["name"]].append(Ip["description"])
+                  PrometheusBlackBox[Ip["tenant"]["name"]].append(Ip["description"])                
+          
     
     #print PrometheusNode
 

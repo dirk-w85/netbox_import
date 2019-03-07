@@ -52,7 +52,10 @@ def main():
 
             AnsibleHostGroups[Tag].append(Address[0])  
         if Ip["description"] != "":
-          DNSEntries[Address[0]] = Ip["description"]
+          if " " in Ip["description"]:
+            DNSEntries[Address[0]] = Ip["description"].replace(" ", "_")
+          else:
+            DNSEntries[Address[0]] = Ip["description"]
 
     for Section in AnsibleHostGroups:
       if "Ansible" in Section:
