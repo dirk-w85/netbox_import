@@ -6,9 +6,9 @@ Based on Tags, it then creates files which can be used in tools linke Ansible of
 ## Usage
 Clone the Repo
 ```
-python /mnt/files/Coding/netbox_import/netbox_import.py [NETBOX-URL]
+python netbox_import.py [NETBOX-URL]
 
-python /mnt/files/Coding/netbox_import/netbox_import_zabbix.py [NETBOX-URL]
+python netbox_import_zabbix.py [NETBOX-URL]
 
-python /mnt/files/Coding/netbox_import/netbox_import_prometheus.py [NETBOX-URL]
+python netbox_import_prometheus.py [NETBOX-URL]
 ```
