@@ -32,13 +32,13 @@ import sys
 def main():
   PrometheusTargets=[]
   PrometheusNode={}
-  PrometheusBlackBox={}
+  PrometheusPing={}
 
   print "-"*20
-  r = requests.get("http://"+sys.argv[1]+"/api/ipam/ip-addresses/?limit=1000")
+  r = requests.get("http://"+sys.argv[1]+"/api/ipam/ip-addresses/?limit=1000&status=1")
   if r.status_code == 200:
     IpAddresses = json.loads(r.text)
-    print("{0} Ip-Addresses in Netbox").format(IpAddresses["count"])
+    print("{0} Active Ip-Addresses in Netbox").format(IpAddresses["count"])
 
     for Ip in IpAddresses["results"]:
       if Ip["status"]["label"] == "Active":
@@ -54,13 +54,13 @@ def main():
               else:
                 PrometheusNode[Ip["tenant"]["name"]].append(Ip["description"])
            
-            if "Prometheus-BlackBox" in Tag and Ip["description"] != "":
+            if "Prometheus-Ping" in Tag and Ip["description"] != "":
               if Ip["tenant"] != None:
-                if Ip["tenant"]["name"] not in PrometheusBlackBox:
-                  PrometheusBlackBox[Ip["tenant"]["name"]] = []
-                  PrometheusBlackBox[Ip["tenant"]["name"]].append(Ip["description"])
+                if Ip["tenant"]["name"] not in PrometheusPing:
+                  PrometheusPing[Ip["tenant"]["name"]] = []
+                  PrometheusPing[Ip["tenant"]["name"]].append(Ip["description"])
                 else:
-                  PrometheusBlackBox[Ip["tenant"]["name"]].append(Ip["description"])                
+                  PrometheusPing[Ip["tenant"]["name"]].append(Ip["description"])                
           
     
     #print PrometheusNode
@@ -87,9 +87,9 @@ def main():
     PrometheusNodeFile.write(PrometheusTargets)
 
     PrometheusTargets = "["
-    for Tenant in PrometheusBlackBox:    
+    for Tenant in PrometheusPing:    
       PrometheusTargets += '\n { \n  "labels": { "env": "internal", "tenant": "'+Tenant+'" },\n  "targets": ['
-      for Node in PrometheusBlackBox[Tenant]:
+      for Node in PrometheusPing[Tenant]:
         PrometheusTargets += '"'+Node.lower()+'",'
 
       if (PrometheusTargets[-1] == ','):
