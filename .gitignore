@@ -3,4 +3,5 @@
 zabbix_hosts.yml
 import.sh
 hosts.yml
+subnets.yml
 hosts
